@@ -68,7 +68,7 @@
 
 #define INAV_ACC_BIAS_ACCEPTANCE_VALUE      (GRAVITY_CMSS * 0.25f)   // Max accepted bias correction of 0.25G - unlikely we are going to be that much off anyway
 
-#define INAV_GPS_GLITCH_RADIUS              250.0f  // 2.5m GPS glitch radius
+#define INAV_GPS_GLITCH_RADIUS              1000.0f  //10m GPS glitch radius
 #define INAV_GPS_GLITCH_ACCEL               1000.0f // 10m/s/s max possible acceleration for GPS glitch detection
 
 #define INAV_POSITION_PUBLISH_RATE_HZ       50      // Publish position updates at this rate
@@ -289,7 +289,7 @@ static bool detectGPSGlitch(timeUs_t currentTimeUs)
 
         /* New pos is within predefined radius of predicted pos, radius is expanded exponentially */
         gpsDistance = sqrtf(sq(predictedGpsPosition.V.X - lastKnownGoodPosition.V.X) + sq(predictedGpsPosition.V.Y - lastKnownGoodPosition.V.Y));
-        if (gpsDistance <= (INAV_GPS_GLITCH_RADIUS + 0.5f * INAV_GPS_GLITCH_ACCEL * dT * dT)) {
+        if (gpsDistance <= INAV_GPS_GLITCH_RADIUS) {
             isGlitching = false;
         }
         else {
@@ -387,6 +387,9 @@ void onNewGPSData(void)
                 if (detectGPSGlitch(currentTimeUs)) {
                     posEstimator.gps.glitchRecovery = false;
                     posEstimator.gps.glitchDetected = true;
+                    
+                     //add an error if glitch is detected
+                    gpsStats.errors++;
                 }
                 else {
                     /* Store previous glitch flag in glitchRecovery to indicate a valid reading after a glitch */
@@ -633,7 +636,7 @@ static void updateEstimatedTopic(timeUs_t currentTimeUs)
                                          (isBaroValid && posEstimator.state.isBaroGroundValid && posEstimator.baro.alt < posEstimator.state.baroGroundAlt));
 
 #if defined(NAV_GPS_GLITCH_DETECTION)
-    //isGPSValid = isGPSValid && !posEstimator.gps.glitchDetected;
+    isGPSValid = isGPSValid && !posEstimator.gps.glitchDetected;
 #endif
 
     /* Validate EPV for GPS and calculate altitude/climb rate correction flags */
