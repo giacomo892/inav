@@ -68,7 +68,7 @@
 
 #define INAV_ACC_BIAS_ACCEPTANCE_VALUE      (GRAVITY_CMSS * 0.25f)   // Max accepted bias correction of 0.25G - unlikely we are going to be that much off anyway
 
-#define INAV_GPS_GLITCH_RADIUS              1000.0f  //10m GPS glitch radius
+#define INAV_GPS_GLITCH_RADIUS              2500.0f  //25m GPS glitch radius
 #define INAV_GPS_GLITCH_ACCEL               1000.0f // 10m/s/s max possible acceleration for GPS glitch detection
 
 #define INAV_POSITION_PUBLISH_RATE_HZ       50      // Publish position updates at this rate
