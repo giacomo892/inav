@@ -27,9 +27,7 @@
 #define USE_RX_PWM
 #define USE_RX_PPM
 #define SERIAL_RX
-#define USE_SERIALRX_SPEKTRUM   // Cheap and fairly common protocol
 #define USE_SERIALRX_SBUS       // Very common protocol
-#define USE_SERIALRX_IBUS       // Cheap FlySky & Turnigy receivers
 
 #if (FLASH_SIZE > 64)
 #define BLACKBOX
@@ -40,6 +38,7 @@
 #define TELEMETRY
 #define TELEMETRY_LTM
 #define TELEMETRY_FRSKY
+#define FIXED_WING_LANDING
 #endif
 
 #if defined(STM_FAST_TARGET)
@@ -49,7 +48,6 @@
 #endif
 
 #if (FLASH_SIZE > 128)
-#define FIXED_WING_LANDING
 #define AUTOTUNE_FIXED_WING
 #define ASYNC_GYRO_PROCESSING
 #define BOOTLOG
