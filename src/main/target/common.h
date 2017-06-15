@@ -38,6 +38,8 @@
 #define TELEMETRY
 #define TELEMETRY_LTM
 #define FIXED_WING_LANDING
+#define USE_64BIT_TIME
+#define AUTOTUNE_FIXED_WING
 #endif
 
 #if defined(STM_FAST_TARGET)
@@ -47,12 +49,11 @@
 #endif
 
 #if (FLASH_SIZE > 128)
-#define AUTOTUNE_FIXED_WING
+
 #define ASYNC_GYRO_PROCESSING
 #define BOOTLOG
 #define BOOTLOG_DESCRIPTIONS
 #define STATS
-#define USE_64BIT_TIME
 #define USE_GYRO_NOTCH_1
 #define USE_GYRO_NOTCH_2
 #define USE_DTERM_NOTCH
