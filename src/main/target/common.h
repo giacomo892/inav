@@ -37,7 +37,6 @@
 #define USE_FLM_TURN_ASSIST     // This is mandatory for fixed-wing navigation
 #define TELEMETRY
 #define TELEMETRY_LTM
-#define TELEMETRY_FRSKY
 #define FIXED_WING_LANDING
 #endif
 
