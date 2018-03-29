@@ -77,14 +77,17 @@
 #endif
 
 #if defined(USE_BARO_BMP280)
+/*
     #if defined(BMP280_SPI_BUS)
     BUSDEV_REGISTER_SPI(busdev_bmp280,      DEVHW_BMP280,       BMP280_SPI_BUS,     BMP280_CS_PIN,      NONE,           DEVFLAGS_NONE);
     #elif defined(BMP280_I2C_BUS) || defined(BARO_I2C_BUS)
     #if !defined(BMP280_I2C_BUS)
         #define BMP280_I2C_BUS BARO_I2C_BUS
     #endif
+    */
+    #define BMP280_I2C_BUS BARO_I2C_BUS
     BUSDEV_REGISTER_I2C(busdev_bmp280,      DEVHW_BMP280,       BMP280_I2C_BUS,     0x76,               NONE,           DEVFLAGS_NONE);
-    #endif
+  //  #endif
 #endif
 
 #if defined(USE_BARO_MS5607)
