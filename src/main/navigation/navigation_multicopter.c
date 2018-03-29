@@ -290,7 +290,7 @@ bool adjustMulticopterPositionFromRCInput(void)
         return false;
     }
 }
-
+z
 static float getVelocityHeadingAttenuationFactor(void)
 {
     // In WP mode scale velocity if heading is different from bearing
@@ -591,8 +591,8 @@ void calculateMulticopterInitialHoldPosition(fpVector3_t * pos)
     const float stoppingDistanceX = posControl.actualState.vel.x * posControl.posDecelerationTime;
     const float stoppingDistanceY = posControl.actualState.vel.y * posControl.posDecelerationTime;
 
-    pos->x = posControl.actualState.pos.x + stoppingDistanceX;
-    pos->y = posControl.actualState.pos.y + stoppingDistanceY;
+    pos->x = posControl.actualState.pos.x; //+ stoppingDistanceX;
+    pos->y = posControl.actualState.pos.y; // + stoppingDistanceY;
 }
 
 void resetMulticopterHeadingController(void)
