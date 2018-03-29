@@ -282,7 +282,7 @@ bool adjustMulticopterPositionFromRCInput(void)
         //Do not act when FAILSAFE/NAV_RTH/WP_MODE are active
         bool continueToBreak =  (posControl.actualState.velXY>150.0f) && !((FLIGHT_MODE(FAILSAFE_MODE) || FLIGHT_MODE(NAV_RTH_MODE) || FLIGHT_MODE(NAV_WP_MODE)));
         if (continueToBreak || posControl.flags.isAdjustingPosition) {
-            t_fp_vector stopPosition;
+            fpVector3_t stopPosition;
             calculateMulticopterInitialHoldPosition(&stopPosition);
             setDesiredPosition(&stopPosition, 0, NAV_POS_UPDATE_XY);
         }
