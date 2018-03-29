@@ -277,6 +277,7 @@ bool adjustMulticopterPositionFromRCInput(void)
         return true;
     }
     else 
+    {
         //When the copter decelerate to 2m/s then force it to keep the position it has at that moment. The recoil should be low now.
         //Do not act when FAILSAFE/NAV_RTH/WP_MODE are active
         bool continueToBreak =  (posControl.actualState.velXY>150.0f) && !((FLIGHT_MODE(FAILSAFE_MODE) || FLIGHT_MODE(NAV_RTH_MODE) || FLIGHT_MODE(NAV_WP_MODE)));
