@@ -400,6 +400,21 @@ void initLtmTelemetry(void)
     ltmPortSharing = determinePortSharing(portConfig, FUNCTION_TELEMETRY_LTM);
 }
 
+
+
+void configureLtmScheduler(void)
+{
+
+ /* setup scheduler, default to 'normal' */
+    if (telemetryConfig()->ltmUpdateRate == LTM_RATE_MEDIUM)
+        ltm_schedule = ltm_medium_schedule;
+    else if (telemetryConfig()->ltmUpdateRate == LTM_RATE_SLOW)
+        ltm_schedule = ltm_slow_schedule;
+    else
+        ltm_schedule = ltm_normal_schedule;
+
+}
+
 void configureLtmTelemetryPort(void)
 {
     if (!portConfig) {
@@ -410,15 +425,7 @@ void configureLtmTelemetryPort(void)
         baudRateIndex = BAUD_19200;
     }
 
-    /* setup scheduler, default to 'normal' */
-    if (telemetryConfig()->ltmUpdateRate == LTM_RATE_MEDIUM)
-        ltm_schedule = ltm_medium_schedule;
-    else if (telemetryConfig()->ltmUpdateRate == LTM_RATE_SLOW)
-        ltm_schedule = ltm_slow_schedule;
-    else
-        ltm_schedule = ltm_normal_schedule;
-
-    /* Sanity check that we can support the scheduler */
+        /* Sanity check that we can support the scheduler */
     if (baudRateIndex == BAUD_2400 && telemetryConfig()->ltmUpdateRate == LTM_RATE_NORMAL)
          ltm_schedule = ltm_medium_schedule;
     if (baudRateIndex == BAUD_1200)
@@ -436,14 +443,17 @@ void checkLtmTelemetryState(void)
     if (portConfig && telemetryCheckRxPortShared(portConfig)) {
         if (!ltmEnabled && telemetrySharedPort != NULL) {
             ltmPort = telemetrySharedPort;
+            configureLtmScheduler();
             ltmEnabled = true;
         }
     } else {
         bool newTelemetryEnabledValue = telemetryDetermineEnabledState(ltmPortSharing);
         if (newTelemetryEnabledValue == ltmEnabled)
             return;
-        if (newTelemetryEnabledValue)
+        if (newTelemetryEnabledValue){
             configureLtmTelemetryPort();
+            configureLtmScheduler();
+    }
         else
             freeLtmTelemetryPort();
     }

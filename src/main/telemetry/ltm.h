@@ -50,6 +50,7 @@ void handleLtmTelemetry(void);
 void checkLtmTelemetryState(void);
 
 void freeLtmTelemetryPort(void);
+void configureLtmScheduler(void);
 void configureLtmTelemetryPort(void);
 
 int getLtmFrame(uint8_t *frame, ltm_frame_e ltmFrameType);
