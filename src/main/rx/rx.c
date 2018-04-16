@@ -503,9 +503,10 @@ void calculateRxChannelsAndUpdateFailsafe(timeUs_t currentTimeUs)
         uint16_t sample = (*rxRuntimeConfig.rcReadRawFn)(&rxRuntimeConfig, rawChannel);
 
         //print raw channel values
-        DEBUG_TRACE("CH %d VALUE: %d",rawChannel,sample);
+        //DEBUG_TRACE("CH %d VALUE: %d",rawChannel,sample);
 
         // apply the rx calibration to flight channel
+        
         if (channel < NON_AUX_CHANNEL_COUNT && sample != PPM_RCVR_TIMEOUT) {
             sample = scaleRange(sample, rxChannelRangeConfigs(channel)->min, rxChannelRangeConfigs(channel)->max, PWM_RANGE_MIN, PWM_RANGE_MAX);
             sample = MIN(MAX(PWM_PULSE_MIN, sample), PWM_PULSE_MAX);
@@ -513,17 +514,19 @@ void calculateRxChannelsAndUpdateFailsafe(timeUs_t currentTimeUs)
 
         // Store as rxRaw
         rcRaw[channel] = sample;
-
+        //DEBUG_TRACE("CH %d VALUE: %d",channel,rcRaw[channel]);
+        //DEBUG_TRACE("VALID %s", isPulseValid(sample) ? "YES" : "NO");
         // Apply invalid pulse value logic
         if (!isPulseValid(sample)) {
-            sample = rcData[channel];   // hold channel, replace with old value
+            DEBUG_TRACE("CH %d VALUE: %d",channel,rcData[channel]);
+            //sample = rcData[channel];   // hold channel, replace with old value
             if ((currentTimeMs > rcInvalidPulsPeriod[channel]) && (channel < NON_AUX_CHANNEL_COUNT)) {
                 rxFlightChannelsValid = false;
             }
         } else {
             rcInvalidPulsPeriod[channel] = currentTimeMs + MAX_INVALID_PULS_TIME;
         }
-
+       
         // Update rcData channel value
         if (rxRuntimeConfig.requireFiltering) {
             rcData[channel] = sample;
