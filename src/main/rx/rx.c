@@ -502,7 +502,7 @@ void calculateRxChannelsAndUpdateFailsafe(timeUs_t currentTimeUs)
         // sample the channel
         uint16_t sample = (*rxRuntimeConfig.rcReadRawFn)(&rxRuntimeConfig, rawChannel);
 
-        if (sample >= (1 << 14)) DEBUG_TRACE_SYNC("CH %d VALUE: %d",channel,sample);
+        if (sample >= (1 << 14)) DEBUG_TRACE_SYNC("FAILSAFE CONDITION CH %d VALUE: %d",channel,sample);
 
 
         //print raw channel values
