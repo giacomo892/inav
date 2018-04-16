@@ -252,7 +252,7 @@ static void imuCheckAndResetOrientationQuaternion(const fpVector3_t * accBF)
     }
 
     imuResetOrientationQuaternion(accBF);
-    DEBUG_TRACE("AHRS orientation quaternion error");
+    //DEBUG_TRACE("AHRS orientation quaternion error");
 
 #ifdef USE_BLACKBOX
     if (feature(FEATURE_BLACKBOX)) {
