@@ -502,6 +502,9 @@ void calculateRxChannelsAndUpdateFailsafe(timeUs_t currentTimeUs)
         // sample the channel
         uint16_t sample = (*rxRuntimeConfig.rcReadRawFn)(&rxRuntimeConfig, rawChannel);
 
+        //print raw channel values
+        DEBUG_TRACE("CH %d VALUE: %d",rawChannel,sample);
+
         // apply the rx calibration to flight channel
         if (channel < NON_AUX_CHANNEL_COUNT && sample != PPM_RCVR_TIMEOUT) {
             sample = scaleRange(sample, rxChannelRangeConfigs(channel)->min, rxChannelRangeConfigs(channel)->max, PWM_RANGE_MIN, PWM_RANGE_MAX);
