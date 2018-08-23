@@ -459,7 +459,9 @@ void gyroUpdate(timeDelta_t gyroUpdateDeltaUs)
         }
 
 #ifdef USE_GYRO_BIQUAD_RC_FIR2
+        if(axis==2){
         gyroADCf = gyroFilterStage2ApplyFn(stage2Filter[axis], gyroADCf);
+        }
 #endif
 
         if (axis < 2) {
