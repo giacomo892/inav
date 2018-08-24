@@ -435,7 +435,16 @@ void applyFixedWingPitchRollThrottleController(navigationFSMStateFlags_t navStat
         // PITCH >0 dive, <0 climb
         int16_t pitchCorrection = constrain(posControl.rcAdjustment[PITCH], -DEGREES_TO_DECIDEGREES(navConfig()->fw.max_dive_angle), DEGREES_TO_DECIDEGREES(navConfig()->fw.max_climb_angle));
         rcCommand[PITCH] = -pidAngleToRcCommand(pitchCorrection, pidProfile()->max_angle_inclination[FD_PITCH]);
-        int16_t throttleCorrection = DECIDEGREES_TO_DEGREES(pitchCorrection) * navConfig()->fw.pitch_to_throttle;
+
+        int16_t throttleCorrection=0;
+        
+        //apply only throttle correction is pitch change is greater than 3 degrees
+
+        if(ABS(pitchCorrection)>3) 
+        {
+         throttleCorrection = DECIDEGREES_TO_DEGREES(pitchCorrection) * navConfig()->fw.pitch_to_throttle;
+        }
+
 
 #ifdef NAV_FIXED_WING_LANDING
         if (navStateFlags & NAV_CTL_LAND) {
@@ -467,7 +476,18 @@ void applyFixedWingPitchRollThrottleController(navigationFSMStateFlags_t navStat
             isAutoThrottleManuallyIncreased = false;
         }
 
-        rcCommand[THROTTLE] = constrain(correctedThrottleValue, motorConfig()->minthrottle, motorConfig()->maxthrottle);
+        static float throttle;
+        static timeMs_t last_throttle_update;
+        
+        //force restart if the last update was too long ago (2s)
+
+        if ( throttle == 0 || (millis() - last_throttle_update) > 2000 )  throttle = navConfig()->fw.cruise_throttle; 
+
+        last_throttle_update=millis();
+
+        throttle=0.95f*throttle+0.05f*correctedThrottleValue;
+     
+        rcCommand[THROTTLE]= constrain((int16_t)throttle, motorConfig()->minthrottle, motorConfig()->maxthrottle);
     }
 
 #ifdef NAV_FIXED_WING_LANDING
