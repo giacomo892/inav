@@ -83,7 +83,7 @@
 #include "config/feature.h"
 
 #include "uav_interconnect/uav_interconnect.h"
-
+#include "build/debug.h"
 void taskHandleSerial(timeUs_t currentTimeUs)
 {
     UNUSED(currentTimeUs);
@@ -118,6 +118,7 @@ void taskUpdateTemperature(timeUs_t currentTimeUs)
 {
     UNUSED(currentTimeUs);
     temperatureUpdate();
+    DEBUG_TRACE_SYNC("Gyro Temp: %d",getTemperature(TEMP_GYRO)/10);
 }
 
 #ifdef USE_GPS

@@ -476,6 +476,27 @@ static inline void osdFormatFlyTime(char *buff, textAttributes_t *attr)
 }
 
 /**
+* Converts temperature into a string based on the current unit system.
+* @param alt Raw altitude/distance (i.e. as taken from baro.BaroAlt in centimeters)
+*/
+static void osdFormatTemperatureStr(char *buff, int32_t alt)
+{
+    int32_t value;
+    switch ((osd_unit_e)osdConfig()->units) {
+        case OSD_UNIT_IMPERIAL:
+            value = CENTIMETERS_TO_FEET(alt);
+            tfp_sprintf(buff, "%d%c", value, SYM_FT);
+            break;
+        case OSD_UNIT_UK:
+            FALLTHROUGH;
+        case OSD_UNIT_METRIC:
+            value = CENTIMETERS_TO_METERS(alt);
+            tfp_sprintf(buff, "%d%c", value, SYM_M);
+            break;
+    }
+}
+
+/**
  * Converts RSSI into a % value used by the OSD.
  */
 static uint16_t osdConvertRSSI(void)
